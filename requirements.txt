@@ -1,4 +1,3 @@
-random
 streamlit
 requests
 PIL
