@@ -1,6 +1,5 @@
 import os
 import random
-
 import streamlit as st
 import requests
 from PIL import Image
@@ -185,15 +184,7 @@ def _main():
     </style>
     """
     st.markdown(hide_streamlit_style, unsafe_allow_html=True) # This let's you hide the Streamlit branding
-
-    # Navigation to the different pages in the app
-    page_names_to_funcs = {
-        #"Welcome": introPage,
-        "Debate": page2
-    }
-
-    page_name = st.sidebar.selectbox("Choose a Page", page_names_to_funcs.keys())
-    page_names_to_funcs[page_name]()
+    page2()
 
 if __name__ == "__main__":
     _main()
