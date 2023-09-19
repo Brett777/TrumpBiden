@@ -1,10 +1,12 @@
+import os
 import random
 
 import streamlit as st
 import requests
 from PIL import Image
 import openai
-openai.api_key = "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"
+openai.api_key = os.getenv("OPENAI_KEY")
+
 
 #Configure the page title, favicon, layout, etc
 st.set_page_config(page_title="Trump vs Biden")
