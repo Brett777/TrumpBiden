@@ -1,0 +1,5 @@
+random
+streamlit
+requests
+PIL
+openai
