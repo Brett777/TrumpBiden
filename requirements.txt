@@ -1,4 +1,4 @@
 streamlit
 requests
-PIL
+pillow
 openai
