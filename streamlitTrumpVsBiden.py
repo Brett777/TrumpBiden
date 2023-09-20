@@ -31,6 +31,7 @@ def debater(debater, debateQuestion, previousDiscussion):
                             Talk some serious smack to put Biden in his place. 
                             You're leading in the polls.                                              
                             Only write as Donald Trump and don't include any other text.
+                            Don't include the text 'Trump:' at the beginning of your response. 
                             """},
                 {"role": "user", "content":"""
                             The question is:
@@ -65,6 +66,7 @@ def debater(debater, debateQuestion, previousDiscussion):
                             Get under Trump's skin by teasing him.
                             It's OK to note that Trump has 4 indictments and might be going to jail.                             
                             Only write as Joe Biden and don't include any other text.
+                            Don't include the text 'Biden:' at the beginning of your response. 
                             """},
                 {"role": "user", "content": """
                                             The question is:
