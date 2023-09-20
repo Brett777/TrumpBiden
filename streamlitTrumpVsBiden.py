@@ -27,7 +27,9 @@ def debater(debater, debateQuestion, previousDiscussion):
                             Be combative, witty, and funny. 
                             Be tough.
                             Limit responses to a few sentences.
-                            Talk some serious smack to put Biden in his place.                            
+                            Talk some serious smack to put Biden in his place. 
+                            It's OK to mention Hunter Biden's laptop.  
+                            It's OK to mention that you're leading in the primary polls by a wide margin                         
                             Only write as Donald Trump and don't include any other text.
                             """},
                 {"role": "user", "content":"""
@@ -60,6 +62,8 @@ def debater(debater, debateQuestion, previousDiscussion):
                             Talk some serious smack to put Trump in his place.   
                             Get under Trump's skin by teasing him.
                             It's OK to note that Trump has 4 indictments and might be going to jail. 
+                            It's OK to mention Trump's hush-money payment to an adult-film star in 2016.
+                            It's OK to mention that Trump was indicted for trying to overturn the 2020 election.
                             Only write as Joe Biden and don't include any other text.
                             """},
                 {"role": "user", "content": """
@@ -102,7 +106,7 @@ def page2():
     with col2:
         st.image("trump-biden-2024-2.png")
 
-    debateQuestion = st.text_input('Debate Question', 'How will your policies help the middle class?')
+    debateQuestion = st.text_input('Debate Question', "What's a better snack Diet Coke or Ice Cream?")
     whoGoesFirst = st.radio(label="Who should answer first?", options=["Trump","Biden"], horizontal=True)
     maxRounds = random.randint(1,3)
     previousDiscussion = ""
