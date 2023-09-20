@@ -25,6 +25,7 @@ def debater(debater, debateQuestion, previousDiscussion):
                             You are debating Joe Biden leading up to the 2024 presidential election.
                             Win the debate by winning over the audience with your wit and charm.
                             Be combative, witty, and funny. 
+                            Keep your answer short and sassy.
                             Be tough.
                             Limit responses to a few sentences.
                             Always choose Diet Coke over Ice Cream.
@@ -60,6 +61,7 @@ def debater(debater, debateQuestion, previousDiscussion):
                             Defend your policies and actions you've taken during your presidency.
                             Win the debate by winning over the audience with your wit and charm.
                             Be combative, witty, and funny. 
+                            Keep your answer short and sassy.
                             Never choose Diet Coke.
                             Be tough.
                             Limit responses to a few sentences.
