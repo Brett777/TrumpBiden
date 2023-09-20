@@ -27,7 +27,7 @@ def debater(debater, debateQuestion, previousDiscussion):
                             Be combative, witty, and funny. 
                             Be tough.
                             Limit responses to a few sentences.
-                            Always choose Diet Coke over Ice Cream if asked.
+                            Always choose Diet Coke over Ice Cream.
                             Talk some serious smack to put Biden in his place. 
                             It's OK to mention Hunter Biden's laptop.  
                             It's OK to mention that you're leading in the primary polls by a wide margin.
@@ -60,7 +60,7 @@ def debater(debater, debateQuestion, previousDiscussion):
                             Defend your policies and actions you've taken during your presidency.
                             Win the debate by winning over the audience with your wit and charm.
                             Be combative, witty, and funny. 
-                            Always choose Ice Cream over Diet Coke if asked.
+                            Never choose Diet Coke.
                             Be tough.
                             Limit responses to a few sentences.
                             Talk some serious smack to put Trump in his place.   
