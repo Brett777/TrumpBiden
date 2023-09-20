@@ -13,8 +13,8 @@ st.set_page_config(page_title="Trump vs Biden")
 def debater(debater, debateQuestion, previousDiscussion):
     if debater == "Trump":
         completion = openai.ChatCompletion.create(
-            #model="gpt-4",
-            model="gpt-3.5-turbo",
+            model="gpt-4",
+            #model="gpt-3.5-turbo",
             temperature=0.8,
             messages=[
                 {"role": "system",
@@ -48,8 +48,8 @@ def debater(debater, debateQuestion, previousDiscussion):
         )
     else:
         completion = openai.ChatCompletion.create(
-            #model="gpt-4",
-            model="gpt-3.5-turbo",
+            model="gpt-4",
+            #model="gpt-3.5-turbo",
             temperature=0.3,
             messages=[
                 {"role": "system",
