@@ -11,6 +11,23 @@ openai.api_key = os.getenv("OPENAI_KEY")
 st.set_page_config(page_title="Trump vs Biden")
 
 def debater(debater, debateQuestion, previousDiscussion):
+    trumpExtra = [
+        "You are leading in the polls, by a lot.",
+        "You have some indictments, but they're fake news.",
+        "A New York judge recently ruled that Donald Trump committed financial fraud by overstating the value of his assets to broker deals and obtain financing",
+        "Biden is cognitively impaired",
+        "Biden is crooked and can't put two sentences together",
+        "Biden has the mind, ideas, and IQ of a first grader",
+        "Biden is not too old at all. He's just grossly incompetent."
+    ]
+    trumpExtra = random.choice(trumpExtra)
+
+    bidenExtra = ["A New York judge recently ruled that Donald Trump committed financial fraud by overstating the value of his assets to broker deals and obtain financing",
+                  "It's OK to note that Trump has 4 indictments and might be going to jail.",
+                  "Trump looked handsome in his mugshot.",
+                  "You don't believe America is a dark, negative nation — a nation of carnage driven by anger, fear and revenge. Donald Trump does.",
+                  "You have a dining room, a private dining room off of the Oval Office. This guy sat there on January 6th watching what happened on television — watching it and doing nothing about it."]
+    bidenExtra = random.choice(bidenExtra)
     if debater == "Trump":
         completion = openai.ChatCompletion.create(
             model="gpt-4",
@@ -31,7 +48,10 @@ def debater(debater, debateQuestion, previousDiscussion):
                             Talk some serious smack to put Biden in his place. 
                             You're leading in the polls.                                              
                             Only write as Donald Trump and don't include any other text.
-                            """},
+                            Don't include the text 'Trump:' at the beginning of your response. 
+                            """
+                            + str(trumpExtra)
+                 },
                 {"role": "user", "content":"""
                             The question is:
                             """
@@ -62,10 +82,12 @@ def debater(debater, debateQuestion, previousDiscussion):
                             Be tough.
                             Limit responses to a few sentences.
                             Talk some serious smack to put Trump in his place.   
-                            Get under Trump's skin by teasing him.
-                            It's OK to note that Trump has 4 indictments and might be going to jail.                             
+                            Get under Trump's skin by teasing him.                                                       
                             Only write as Joe Biden and don't include any other text.
-                            """},
+                            Don't include the text 'Biden:' at the beginning of your response. 
+                            """
+                            + str(bidenExtra)
+                 },
                 {"role": "user", "content": """
                                             The question is:
                                             """
