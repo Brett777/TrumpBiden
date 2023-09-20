@@ -27,13 +27,9 @@ def debater(debater, debateQuestion, previousDiscussion):
                             Be combative, witty, and funny. 
                             Keep your answer short and sassy.
                             Be tough.
-                            Limit responses to a few sentences.
-                            Always choose Diet Coke over Ice Cream.
+                            Limit responses to a few sentences.                            
                             Talk some serious smack to put Biden in his place. 
-                            It's OK to mention Hunter Biden's laptop.  
-                            It's OK to mention that you're leading in the primary polls by a wide margin.
-                            Sometimes call your opponent 'Quid Pro Joe'.     
-                            Sometimes quote from your book "Art of the Deal".                    
+                            You're leading in the polls.                                              
                             Only write as Donald Trump and don't include any other text.
                             """},
                 {"role": "user", "content":"""
@@ -67,9 +63,7 @@ def debater(debater, debateQuestion, previousDiscussion):
                             Limit responses to a few sentences.
                             Talk some serious smack to put Trump in his place.   
                             Get under Trump's skin by teasing him.
-                            It's OK to note that Trump has 4 indictments and might be going to jail. 
-                            It's OK to mention Trump's hush-money payment to an adult-film star in 2016.
-                            It's OK to mention that Trump was indicted for trying to overturn the 2020 election.
+                            It's OK to note that Trump has 4 indictments and might be going to jail.                             
                             Only write as Joe Biden and don't include any other text.
                             """},
                 {"role": "user", "content": """
