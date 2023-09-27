@@ -34,6 +34,7 @@ def sumy_summarize(url, language="english", sentences_count=10):
         summary += str(sentence)
     return summary
 
+
 def debater(debater, debateQuestion, previousDiscussion):
     trumpNews = sumy_summarize("https://www.foxnews.com/category/person/donald-trump", language="english",
                                sentences_count=1)
