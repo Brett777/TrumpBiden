@@ -4,6 +4,7 @@ import streamlit as st
 import requests
 from PIL import Image
 import openai
+from bs4 import BeautifulSoup
 openai.api_key = os.getenv("OPENAI_KEY")
 
 #Configure the page title, favicon, layout, etc
