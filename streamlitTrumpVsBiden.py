@@ -6,9 +6,9 @@ from PIL import Image
 import openai
 openai.api_key = os.getenv("OPENAI_KEY")
 
-
 #Configure the page title, favicon, layout, etc
 st.set_page_config(page_title="Trump vs Biden")
+
 
 def debater(debater, debateQuestion, previousDiscussion):
     trumpExtra = [
