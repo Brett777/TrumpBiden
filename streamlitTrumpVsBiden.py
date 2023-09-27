@@ -6,11 +6,39 @@ from PIL import Image
 import openai
 openai.api_key = os.getenv("OPENAI_KEY")
 
-
 #Configure the page title, favicon, layout, etc
 st.set_page_config(page_title="Trump vs Biden")
+def sumy_summarize(url, language="english", sentences_count=10):
+    # Fetch website data
+    response = requests.get(url)
+    if response.status_code != 200:
+        return "Unable to fetch webpage."
+
+    # Parse the website content
+    soup = BeautifulSoup(response.text, 'html.parser')
+    for script in soup(["script", "style", "nav", "header", "footer", "aside"]):
+        script.extract()
+
+    # Use specific tags that may contain the main content
+    main_content_tags = ['p', 'article', 'main', 'section']
+    text = ' '.join([tag.get_text() for tag in soup.find_all(main_content_tags)])
+
+    # Initialize the summarizer
+    parser = HtmlParser.from_string(text, url, Tokenizer(language))
+    stemmer = Stemmer(language)
+    summarizer = LsaSummarizer(stemmer)
+    summarizer.stop_words = get_stop_words(language)
+    # Generate summary
+    summary = ""
+    for sentence in summarizer(parser.document, sentences_count):
+        summary += str(sentence)
+    return summary
 
 def debater(debater, debateQuestion, previousDiscussion):
+    trumpNews = sumy_summarize("https://www.foxnews.com/category/person/donald-trump", language="english",
+                               sentences_count=1)
+    bidenNews = sumy_summarize("https://www.huffpost.com/news/topic/joe-biden", language="english", sentences_count=1)
+
     trumpExtra = [
         "You are leading in the polls, by a lot.",
         "You have some indictments, but they're fake news.",
@@ -18,16 +46,25 @@ def debater(debater, debateQuestion, previousDiscussion):
         "Biden is cognitively impaired",
         "Biden is crooked and can't put two sentences together",
         "Biden has the mind, ideas, and IQ of a first grader",
-        "Biden is not too old at all. He's just grossly incompetent."
+        "Biden is not too old at all. He's just grossly incompetent.",
+        "This is a 1-sentence summary of what's in the news today regarding Trump: " + str(trumpNews),
+        "This is a 1-sentence summary of what's in the news today regarding Biden: " + str(bidenNews)
     ]
     trumpExtra = random.choice(trumpExtra)
 
-    bidenExtra = ["A New York judge recently ruled that Donald Trump committed financial fraud by overstating the value of his assets to broker deals and obtain financing",
-                  "It's OK to note that Trump has 4 indictments and might be going to jail.",
-                  "Trump looked handsome in his mugshot.",
-                  "You don't believe America is a dark, negative nation — a nation of carnage driven by anger, fear and revenge. Donald Trump does.",
-                  "You have a dining room, a private dining room off of the Oval Office. This guy sat there on January 6th watching what happened on television — watching it and doing nothing about it."]
+    bidenExtra = [
+        "A New York judge recently ruled that Donald Trump committed financial fraud by overstating the value of his assets to broker deals and obtain financing",
+        "It's OK to note that Trump has 4 indictments and might be going to jail.",
+        "Trump looked handsome in his mugshot.",
+        "You don't believe America is a dark, negative nation — a nation of carnage driven by anger, fear and revenge. Donald Trump does.",
+        "You have a dining room, a private dining room off of the Oval Office. This guy sat there on January 6th watching what happened on television — watching it and doing nothing about it.",
+        "This is a 1-sentence summary of what's in the news today regarding Trump: " + str(trumpNews),
+        "This is a 1-sentence summary of what's in the news today regarding Biden: " + str(bidenNews)
+    ]
     bidenExtra = random.choice(bidenExtra)
+
+
+
     if debater == "Trump":
         completion = openai.ChatCompletion.create(
             model="gpt-4",
