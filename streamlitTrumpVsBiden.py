@@ -4,6 +4,11 @@ import streamlit as st
 import requests
 from PIL import Image
 import openai
+from sumy.parsers.html import HtmlParser
+from sumy.nlp.tokenizers import Tokenizer
+from sumy.summarizers.lsa import LsaSummarizer
+from sumy.nlp.stemmers import Stemmer
+from sumy.utils import get_stop_words
 from bs4 import BeautifulSoup
 openai.api_key = os.getenv("OPENAI_KEY")
 
