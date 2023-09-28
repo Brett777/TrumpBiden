@@ -223,12 +223,13 @@ def page2():
         st.session_state["startButton"] = False
         st.session_state["scoreButton"] = False
 
+    scoreData = pd.read_csv("score.csv")
     with col5:
-        trumpMetric = st.metric(label="Trump", value=st.session_state["trumpScore"])
+        trumpMetric = st.metric(label="Trump", value=scoreData["trump_score"].sum())
 
 
     with col6:
-        bidenMetric = st.metric(label="Biden", value=st.session_state["bidenScore"])
+        bidenMetric = st.metric(label="Biden", value=scoreData["biden_score"].sum())
 
     st.session_state["startButton"] = st.button("Debate!", type="primary")
     if st.session_state["startButton"]:
