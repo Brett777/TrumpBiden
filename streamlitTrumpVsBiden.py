@@ -58,14 +58,18 @@ def get_top_news_from_rss_feed(feed_url, num_stories=3):
         # Get the top news stories
         top_stories = feed.entries[:num_stories]
 
-        # Print the top news stories
-        for i, entry in enumerate(top_stories, start=1):
-            print(f"Headline: {entry.title}")
-            print(f"Description: {entry.description}\n")
+        # Initialize a string to store the news information
+        news_info = ""
 
+        # Iterate through the top news stories and append their info to the string
+        for i, entry in enumerate(top_stories, start=1):
+            news_info += f"Headline: {entry.title}\n"
+            news_info += f"Description: {entry.description}\n\n"
+
+        return news_info
 
     except Exception as e:
-        print(f"An error occurred: {str(e)}")
+        return f"An error occurred: {str(e)}"
 
 def create_csv_file():
     # Specify the CSV file name
