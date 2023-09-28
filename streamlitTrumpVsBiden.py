@@ -282,7 +282,7 @@ def page2():
         trumpMetric.metric(label="Trump", value=scoreData["trump_score"].sum())
 
     with col6:
-        bidenMetric.metric(label="Biden", value=scoreData["biden_score"].sum()])
+        bidenMetric.metric(label="Biden", value=scoreData["biden_score"].sum())
 
 
 #Main app
