@@ -71,6 +71,14 @@ def get_top_news_from_rss_feed(feed_url, num_stories=3):
     except Exception as e:
         return f"An error occurred: {str(e)}"
 
+def get_news_for_debaters():
+    fox_url = "https://moxie.foxnews.com/google-publisher/politics.xml"  # Replace with the RSS feed URL you want to fetch
+    trumpNews = get_top_news_from_rss_feed(fox_url, num_stories=3)
+
+    nbc_url = "http://feeds.nbcnews.com/feeds/nbcpolitics"  # Replace with the RSS feed URL you want to fetch
+    bidenNews = get_top_news_from_rss_feed(nbc_url, num_stories=3)
+    return trumpNews, bidenNews
+
 def create_csv_file():
     # Specify the CSV file name
     csv_file = "score.csv"
@@ -98,12 +106,7 @@ def write_score_to_csv(question, trump_score, biden_score):
         # Write the data to the CSV file as a new row
         csv_writer.writerow([question, trump_score, biden_score])
 
-def debater(debater, debateQuestion, previousDiscussion):
-    fox_url = "https://moxie.foxnews.com/google-publisher/politics.xml"  # Replace with the RSS feed URL you want to fetch
-    trumpNews = get_top_news_from_rss_feed(fox_url, num_stories=3)
-
-    nbc_url = "http://feeds.nbcnews.com/feeds/nbcpolitics"  # Replace with the RSS feed URL you want to fetch
-    bidenNews = get_top_news_from_rss_feed(nbc_url, num_stories=3)
+def debater(debater, debateQuestion, previousDiscussion, trumpNews, bidenNews):
 
     trumpExtra = [
         "You are leading in the polls, by a lot.",
@@ -211,17 +214,8 @@ def photo(description):
     image_url = response['data'][0]['url']
     print(image_url)
 
-#This is a multipage app. Pages are defined as functions, but you can also setup pages as separate .py files.
-def introPage():
-    st.title("This is my first app!")
-    st.subheader("Choose a page from the sidebar.")
-    logo = Image.open(
-        requests.get('https://whataftercollege.com/wp-content/uploads/2020/05/cartoon-machine-learning-class.jpg',
-                     stream=True).raw)
-    st.image(logo, width=600, caption="https://whataftercollege.com/machine-learning/is-machine-learning-fun/")
 
-#Second page
-def page2():
+def mainPage():
     container1 = st.container()
     col1, col2, col3 = container1.columns([1,3,1])
     container2 = st.container()
@@ -251,31 +245,32 @@ def page2():
         bidenMetric = st.metric(label="Biden", value=scoreData["biden_score"].sum())
 
     st.session_state["startButton"] = st.button("Debate!", type="primary")
+    trumpNews, bidenNews = get_news_for_debaters()
     if st.session_state["startButton"]:
         st.session_state["questionsAnswered"] += 1
         for i in range(0, maxRounds):
             if whoGoesFirst =="Trump":
                 st.subheader("Trump:")
                 with st.spinner("Trump formulating response..."):
-                    trumpResponse = debater(debater="Trump", debateQuestion=debateQuestion, previousDiscussion=previousDiscussion)
+                    trumpResponse = debater(debater="Trump", debateQuestion=debateQuestion, previousDiscussion=previousDiscussion, trumpNews=trumpNews, bidenNews=bidenNews)
                     st.write(trumpResponse)
                     previousDiscussion = previousDiscussion + "Trump: \\n" + trumpResponse
 
                 st.subheader("Biden:")
                 with st.spinner("Biden formulating response..."):
-                    bidenResponse = debater(debater="Biden", debateQuestion=debateQuestion, previousDiscussion=previousDiscussion)
+                    bidenResponse = debater(debater="Biden", debateQuestion=debateQuestion, previousDiscussion=previousDiscussion, trumpNews=trumpNews, bidenNews=bidenNews)
                     st.write(bidenResponse)
                     previousDiscussion = previousDiscussion + "Biden: \\n" + bidenResponse
             else:
                 st.subheader("Biden:")
                 with st.spinner("Biden formulating response..."):
-                    bidenResponse = debater(debater="Biden", debateQuestion=debateQuestion, previousDiscussion=previousDiscussion)
+                    bidenResponse = debater(debater="Biden", debateQuestion=debateQuestion, previousDiscussion=previousDiscussion, trumpNews=trumpNews, bidenNews=bidenNews)
                     st.write(bidenResponse)
                     previousDiscussion = previousDiscussion + "Biden: \\n" + bidenResponse
 
                 st.subheader("Trump:")
                 with st.spinner("Trump formulating response..."):
-                    trumpResponse = debater(debater="Trump", debateQuestion=debateQuestion, previousDiscussion=previousDiscussion)
+                    trumpResponse = debater(debater="Trump", debateQuestion=debateQuestion, previousDiscussion=previousDiscussion, trumpNews=trumpNews, bidenNews=bidenNews)
                     st.write(trumpResponse)
                     previousDiscussion = previousDiscussion + "Trump: \\n" + trumpResponse
 
@@ -314,7 +309,7 @@ def _main():
     </style>
     """
     st.markdown(hide_streamlit_style, unsafe_allow_html=True) # This let's you hide the Streamlit branding
-    page2()
+    mainPage()
 
 if __name__ == "__main__":
     _main()
