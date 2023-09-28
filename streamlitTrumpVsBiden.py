@@ -1,6 +1,5 @@
 import os
 import random
-
 import pandas as pd
 import streamlit as st
 import requests
@@ -68,6 +67,21 @@ def get_top_news_from_rss_feed(feed_url, num_stories=3):
     except Exception as e:
         print(f"An error occurred: {str(e)}")
 
+def create_csv_file():
+    # Specify the CSV file name
+    csv_file = "score.csv"
+
+    # Check if the file already exists
+    if not os.path.isfile(csv_file):
+        # If the file doesn't exist, create it with the specified columns and initial data
+        with open(csv_file, mode='w', newline='') as file:
+            csv_writer = csv.writer(file)
+            # Write the header row
+            csv_writer.writerow(["question", "trump_score", "biden_score"])
+            # Write the initial data row
+            csv_writer.writerow(["Test", "0", "0"])
+    else:
+        print(f"'{csv_file}' already exists.")
 def write_score_to_csv(question, trump_score, biden_score):
     # Specify the CSV file name
     csv_file = "score.csv"
@@ -223,6 +237,7 @@ def page2():
         st.session_state["startButton"] = False
         st.session_state["scoreButton"] = False
 
+    create_csv_file()
     scoreData = pd.read_csv("score.csv")
     with col5:
         trumpMetric = st.metric(label="Trump", value=scoreData["trump_score"].sum())
@@ -282,7 +297,7 @@ def page2():
         trumpMetric.metric(label="Trump", value=scoreData["trump_score"].sum())
 
     with col6:
-        bidenMetric.metric(label="Biden", value=scoreData["biden_score"].sum()])
+        bidenMetric.metric(label="Biden", value=scoreData["biden_score"].sum())
 
 
 #Main app
