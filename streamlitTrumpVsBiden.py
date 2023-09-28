@@ -11,6 +11,8 @@ from sumy.nlp.stemmers import Stemmer
 from sumy.utils import get_stop_words
 from bs4 import BeautifulSoup
 openai.api_key = os.getenv("OPENAI_KEY")
+import nltk
+nltk.download('punkt')
 
 #Configure the page title, favicon, layout, etc
 st.set_page_config(page_title="Trump vs Biden")
