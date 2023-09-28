@@ -1,21 +1,26 @@
 import os
 import random
+
+import pandas as pd
 import streamlit as st
 import requests
 from PIL import Image
-import openai
+import csv
 from sumy.parsers.html import HtmlParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lsa import LsaSummarizer
 from sumy.nlp.stemmers import Stemmer
 from sumy.utils import get_stop_words
 from bs4 import BeautifulSoup
+import feedparser
+import openai
 openai.api_key = os.getenv("OPENAI_KEY")
 import nltk
 nltk.download('punkt')
 
 #Configure the page title, favicon, layout, etc
 st.set_page_config(page_title="Trump vs Biden")
+
 def sumy_summarize(url, language="english", sentences_count=10):
     # Fetch website data
     response = requests.get(url)
@@ -42,11 +47,45 @@ def sumy_summarize(url, language="english", sentences_count=10):
         summary += str(sentence)
     return summary
 
+def get_top_news_from_rss_feed(feed_url, num_stories=3):
+    try:
+        # Parse the RSS feed
+        feed = feedparser.parse(feed_url)
+
+        # Check if the feed was successfully parsed
+        if feed.bozo:
+            raise Exception("Error parsing RSS feed")
+
+        # Get the top news stories
+        top_stories = feed.entries[:num_stories]
+
+        # Print the top news stories
+        for i, entry in enumerate(top_stories, start=1):
+            print(f"Headline: {entry.title}")
+            print(f"Description: {entry.description}\n")
+
+
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+
+def write_score_to_csv(question, trump_score, biden_score):
+    # Specify the CSV file name
+    csv_file = "score.csv"
+
+    # Create or open the CSV file in 'append' mode
+    with open(csv_file, mode='a', newline='') as file:
+        # Create a CSV writer object
+        csv_writer = csv.writer(file)
+
+        # Write the data to the CSV file as a new row
+        csv_writer.writerow([question, trump_score, biden_score])
 
 def debater(debater, debateQuestion, previousDiscussion):
-    trumpNews = sumy_summarize("https://www.foxnews.com/politics", language="english",
-                               sentences_count=1)
-    bidenNews = sumy_summarize("https://www.msnbc.com/politicsnation", language="english", sentences_count=1)
+    fox_url = "https://moxie.foxnews.com/google-publisher/politics.xml"  # Replace with the RSS feed URL you want to fetch
+    trumpNews = get_top_news_from_rss_feed(fox_url, num_stories=3)
+
+    nbc_url = "http://feeds.nbcnews.com/feeds/nbcpolitics"  # Replace with the RSS feed URL you want to fetch
+    bidenNews = get_top_news_from_rss_feed(nbc_url, num_stories=3)
 
     trumpExtra = [
         "You are leading in the polls, by a lot.",
@@ -64,7 +103,7 @@ def debater(debater, debateQuestion, previousDiscussion):
         "It's OK to note that Trump has 4 indictments and might be going to jail.",
         "Trump looked handsome in his mugshot.",
         "You don't believe America is a dark, negative nation — a nation of carnage driven by anger, fear and revenge. Donald Trump does.",
-        "You have a dining room, a private dining room off of the Oval Office. This guy sat there on January 6th watching what happened on television — watching it and doing nothing about it.",
+        "Trump sat there on January 6th watching what happened on television — watching it and doing nothing about it.",
 
     ]
     bidenExtra = random.choice(bidenExtra)
@@ -94,7 +133,7 @@ def debater(debater, debateQuestion, previousDiscussion):
                             Don't include the text 'Trump:' at the beginning of your response. 
                             """
                             + str(trumpExtra)
-                            +" This is a 1-sentence summary of what's hapenning on Fox news today: " + str(trumpNews)
+                            +" Here are the top 3 stories on Fox news today: " + str(trumpNews)
                  },
                 {"role": "user", "content":"""
                             The question is:
@@ -131,7 +170,7 @@ def debater(debater, debateQuestion, previousDiscussion):
                             Don't include the text 'Biden:' at the beginning of your response. 
                             """
                             + str(bidenExtra)
-                            + " This is a 1-sentence summary of what's hapenning on MSNBC news today: " + str(bidenNews)
+                            + " Here are the top 3 stories on MSNBC news today: " + str(bidenNews)
                  },
                 {"role": "user", "content": """
                                             The question is:
@@ -162,7 +201,6 @@ def introPage():
         requests.get('https://whataftercollege.com/wp-content/uploads/2020/05/cartoon-machine-learning-class.jpg',
                      stream=True).raw)
     st.image(logo, width=600, caption="https://whataftercollege.com/machine-learning/is-machine-learning-fun/")
-
 
 #Second page
 def page2():
@@ -229,20 +267,21 @@ def page2():
                 submitScoreButton = st.form_submit_button("Submit Score")
                 if submitScoreButton:
                     if winner == "Trump":
-                        st.session_state["trumpScore"] += 1
+                        #st.session_state["trumpScore"] += 1
+                        write_score_to_csv(question=debateQuestion, trump_score=1, biden_score=0)
                     elif winner == "Biden":
-                        st.session_state["bidenScore"] += 1
+                        #st.session_state["bidenScore"] += 1
+                        write_score_to_csv(question=debateQuestion, trump_score=0, biden_score=1)
                     st.session_state["winner"] = ""
                     st.session_state["questionsAnswered"] = 0
                     scorebox.empty()
 
+    scoreData = pd.read_csv("score.csv")
     with col5:
-        trumpMetric.metric(label="Trump", value=st.session_state["trumpScore"])
+        trumpMetric.metric(label="Trump", value=scoreData["trump_score"].sum())
 
     with col6:
-        bidenMetric.metric(label="Biden", value=st.session_state["bidenScore"])
-
-
+        bidenMetric.metric(label="Biden", value=scoreData["biden_score"].sum()])
 
 
 #Main app
@@ -260,4 +299,5 @@ def _main():
 if __name__ == "__main__":
     _main()
 
-
+feed_url = "http://feeds.nbcnews.com/feeds/nbcpolitics"  # Replace with the RSS feed URL you want to fetch
+get_top_news_from_rss_feed(feed_url, num_stories=3)
