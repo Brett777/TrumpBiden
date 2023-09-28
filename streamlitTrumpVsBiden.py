@@ -11,6 +11,8 @@ from sumy.nlp.stemmers import Stemmer
 from sumy.utils import get_stop_words
 from bs4 import BeautifulSoup
 openai.api_key = os.getenv("OPENAI_KEY")
+import nltk
+nltk.download('punkt')
 
 #Configure the page title, favicon, layout, etc
 st.set_page_config(page_title="Trump vs Biden")
@@ -42,9 +44,9 @@ def sumy_summarize(url, language="english", sentences_count=10):
 
 
 def debater(debater, debateQuestion, previousDiscussion):
-    trumpNews = sumy_summarize("https://www.foxnews.com/category/person/donald-trump", language="english",
+    trumpNews = sumy_summarize("https://www.foxnews.com/politics", language="english",
                                sentences_count=1)
-    bidenNews = sumy_summarize("https://www.huffpost.com/news/topic/joe-biden", language="english", sentences_count=1)
+    bidenNews = sumy_summarize("https://www.msnbc.com/politicsnation", language="english", sentences_count=1)
 
     trumpExtra = [
         "You are leading in the polls, by a lot.",
@@ -53,9 +55,7 @@ def debater(debater, debateQuestion, previousDiscussion):
         "Biden is cognitively impaired",
         "Biden is crooked and can't put two sentences together",
         "Biden has the mind, ideas, and IQ of a first grader",
-        "Biden is not too old at all. He's just grossly incompetent.",
-        "This is a 1-sentence summary of what's in the news today regarding Trump: " + str(trumpNews),
-        "This is a 1-sentence summary of what's in the news today regarding Biden: " + str(bidenNews)
+        "Biden is not too old at all. He's just grossly incompetent."
     ]
     trumpExtra = random.choice(trumpExtra)
 
@@ -65,8 +65,7 @@ def debater(debater, debateQuestion, previousDiscussion):
         "Trump looked handsome in his mugshot.",
         "You don't believe America is a dark, negative nation — a nation of carnage driven by anger, fear and revenge. Donald Trump does.",
         "You have a dining room, a private dining room off of the Oval Office. This guy sat there on January 6th watching what happened on television — watching it and doing nothing about it.",
-        "This is a 1-sentence summary of what's in the news today regarding Trump: " + str(trumpNews),
-        "This is a 1-sentence summary of what's in the news today regarding Biden: " + str(bidenNews)
+
     ]
     bidenExtra = random.choice(bidenExtra)
 
@@ -95,6 +94,7 @@ def debater(debater, debateQuestion, previousDiscussion):
                             Don't include the text 'Trump:' at the beginning of your response. 
                             """
                             + str(trumpExtra)
+                            +" This is a 1-sentence summary of what's hapenning on Fox news today: " + str(trumpNews)
                  },
                 {"role": "user", "content":"""
                             The question is:
@@ -131,6 +131,7 @@ def debater(debater, debateQuestion, previousDiscussion):
                             Don't include the text 'Biden:' at the beginning of your response. 
                             """
                             + str(bidenExtra)
+                            + " This is a 1-sentence summary of what's hapenning on MSNBC news today: " + str(bidenNews)
                  },
                 {"role": "user", "content": """
                                             The question is:
