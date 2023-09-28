@@ -46,7 +46,7 @@ def sumy_summarize(url, language="english", sentences_count=10):
         summary += str(sentence)
     return summary
 
-def get_top_news_from_rss_feed(feed_url, num_stories=3):
+def get_top_news_from_rss_feed(feed_url, num_stories):
     try:
         # Parse the RSS feed
         feed = feedparser.parse(feed_url)
@@ -73,10 +73,10 @@ def get_top_news_from_rss_feed(feed_url, num_stories=3):
 
 def get_news_for_debaters():
     fox_url = "https://moxie.foxnews.com/google-publisher/politics.xml"  # Replace with the RSS feed URL you want to fetch
-    trumpNews = get_top_news_from_rss_feed(fox_url, num_stories=3)
+    trumpNews = get_top_news_from_rss_feed(fox_url, num_stories=4)
 
     nbc_url = "http://feeds.nbcnews.com/feeds/nbcpolitics"  # Replace with the RSS feed URL you want to fetch
-    bidenNews = get_top_news_from_rss_feed(nbc_url, num_stories=3)
+    bidenNews = get_top_news_from_rss_feed(nbc_url, num_stories=4)
     return trumpNews, bidenNews
 
 def create_csv_file():
