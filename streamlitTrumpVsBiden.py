@@ -111,7 +111,6 @@ def debater(debater, debateQuestion, previousDiscussion, trumpNews, bidenNews):
     trumpExtra = [
         "You are leading in the polls, by a lot.",
         "You have some indictments, but they're fake news.",
-        "A New York judge recently ruled that Donald Trump committed financial fraud by overstating the value of his assets to broker deals and obtain financing",
         "Biden is cognitively impaired",
         "Biden is crooked and can't put two sentences together",
         "Biden has the mind, ideas, and IQ of a first grader",
@@ -148,13 +147,12 @@ def debater(debater, debateQuestion, previousDiscussion, trumpNews, bidenNews):
                             Keep your answer short and sassy.
                             Be tough.
                             Limit responses to a few sentences.                            
-                            Talk some serious smack to put Biden in his place. 
-                            You're leading in the polls.                                              
+                            Talk some serious smack to put Biden in his place.                                                                         
                             Only write as Donald Trump and don't include any other text.
                             Don't include the text 'Trump:' at the beginning of your response. 
                             """
                             + str(trumpExtra)
-                            +" Here are the top 3 stories on Fox news today: " + str(trumpNews)
+                            +" Consider the top stories on Fox news today: " + str(trumpNews)
                  },
                 {"role": "user", "content":"""
                             The question is:
@@ -191,7 +189,7 @@ def debater(debater, debateQuestion, previousDiscussion, trumpNews, bidenNews):
                             Don't include the text 'Biden:' at the beginning of your response. 
                             """
                             + str(bidenExtra)
-                            + " Here are the top 3 stories on MSNBC news today: " + str(bidenNews)
+                            + " Consider the top stories on MSNBC news today: " + str(bidenNews)
                  },
                 {"role": "user", "content": """
                                             The question is:
