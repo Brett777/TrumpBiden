@@ -1,7 +1,7 @@
 streamlit
 requests
 pillow
-openai
+openai==0.28
 sumy
 beautifulsoup4
 nltk
